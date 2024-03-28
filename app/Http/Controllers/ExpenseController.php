@@ -19,15 +19,16 @@ class ExpenseController extends Controller
      *     @OA\Response(response="404", description="No expense found"),
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $userId = Auth::id();
-        $expenses =Expense::where('user_id', $userId)->get();
+        $expenses = Expense::where('user_id', $request->user()->id)->get();
         $response = [
             'status' => 'ok',
             'data' => ExpenseResource::collection($expenses)
         ];
-        return response()->json(array('expenses' => $response ));
+
+        return response()->json($response, 200);
+
     }
 
     /**
