@@ -21,14 +21,19 @@
                     "404": {
                         "description": "No expense found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "Expenses"
                 ],
                 "summary": "Create a new expense",
-                "description": "Create a new expense with provided name and age",
+                "description": "Create a new expense with provided name, description and price ",
                 "operationId": "a764a04e6d047ab02a68f06c706e67f3",
                 "requestBody": {
                     "required": true,
@@ -38,7 +43,8 @@
                                 "required": [
                                     "name",
                                     "description",
-                                    "price"
+                                    "price",
+                                    "user_id"
                                 ],
                                 "properties": {
                                     "name": {
@@ -49,6 +55,9 @@
                                     },
                                     "price": {
                                         "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -58,12 +67,17 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "expense created"
+                        "description": "expenditure created"
                     },
                     "400": {
                         "description": "Bad request"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/expenses/{id}": {
@@ -121,7 +135,12 @@
                     "404": {
                         "description": "expense not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -148,8 +167,28 @@
                     "404": {
                         "description": "expense not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
+        }
+    ]
 }

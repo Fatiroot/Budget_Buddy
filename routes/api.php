@@ -15,6 +15,7 @@ use App\Http\Controllers\ExpenseController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);

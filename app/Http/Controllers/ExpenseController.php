@@ -14,6 +14,7 @@ class ExpenseController extends Controller
      *     path="/api/expenses",
      *     tags={"Expenses"},
      *     summary="Get all expenses",
+     *     security={{"sanctum": {}}},
      *     description="Retrieve a list of all expenses",
      *     @OA\Response(response="200", description="List of expenses"),
      *     @OA\Response(response="404", description="No expense found"),
@@ -30,35 +31,37 @@ class ExpenseController extends Controller
         return response()->json($response, 200);
 
     }
-
     /**
-     * @OA\Post(
-     *     path="/api/expenses",
-     *     tags={"Expenses"},
-     *     summary="Create a new expense",
-     *     description="Create a new expense with provided name and age",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "description","price"},
-     *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="price", type="integer")
-     *         )
-     *     ),
-     *     @OA\Response(response="201", description="expense created"),
-     *     @OA\Response(response="400", description="Bad request")
-     * )
-     */
+
+*    @OA\Post(
+*    path="/api/expenses",
+*    tags={"Expenses"},
+*    summary="Create a new expense",
+*    description="Create a new expense with provided name, description and price ",
+*    security={{"sanctum": {}}},
+*    @OA\RequestBody(
+*    required=true,
+*    @OA\JsonContent(
+*    required={"name", "description", "price", "user_id"},
+*    @OA\Property(property="name", type="string"),
+*    @OA\Property(property="description", type="string"),
+*    @OA\Property(property="price", type="integer"),
+*    @OA\Property(property="user_id", type="integer")
+*    )
+*    ),
+*    @OA\Response(response="201", description="expenditure created"),
+*    @OA\Response(response="400", description="Bad request")
+*      )
+    */
     public function store(Request $request)
     {
-        $userId = $request->user()->id;
+
 
         $expense = Expense::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'user_id' => $userId,
+            'user_id' =>$request->user()->id,
         ]);
         return response()->json(['expense' => $expense], 201);
     }
@@ -80,6 +83,7 @@ class ExpenseController extends Controller
      *     tags={"Expenses"},
      *     summary="Update a expense",
      *     description="Update the details of a expense",
+     *    security={{"sanctum": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -115,6 +119,7 @@ class ExpenseController extends Controller
      *     tags={"Expenses"},
      *     summary="Delete a expense",
      *     description="Delete a expense by its ID",
+     *     security={{"sanctum": {}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
